@@ -16,9 +16,17 @@ recoll with webui in a docker container
 - Recoll homepage: http://www.lesbonscomptes.com/recoll
 
 # installation steps
-- in docker start the wizard to create a docker container from this image: mount `/homes` to `/homes` and mount `/homes/YOUR_USER_NAME` to `/root`, set up port mapping (defaults do also work)
-- complete the following steps before you run the container
-- download recoll.conf (https://raw.githubusercontent.com/dsheyp/docker-recoll-webui/master/recoll.conf) and place it in `/volume1/homes/YOUR_USER_NAME/.recoll/`
-- modify `recoll.conf` (change the user name, ...)
-- to run the indexer as a time-based task on a synology nas download `recollindex.sh` (https://raw.githubusercontent.com/dsheyp/docker-recoll-webui/master/recollindex.sh), place it somewhere on your synology, make it executable (in a shell run: `chmod 775 recollindex.sh`) and remember to modify `CONTAINER_ID` and paths
-- then set up an automated task in the control panel of your synology with task scheduler and point it to `recollindex.sh`
+- Build a docker image with the command "docker build -t recoll-docker . ". This will create a local image named recoll-docker
+- The docker-compose.yaml assumes several things
+   1) You will use http://localhost:8888 to access the webui
+   2) Your recoll.conf and gunicorn files will be at /home/rsmith/.recoll
+   3) copy gunicorn.conf and recoll.conf to /home/rsmith/.recoll
+   4) recoll will index /home/rsmith/Diary -> /data/Diary
+- Run "docker compose up -d"  to create the docker container.
+- Now get recollindex ready for your first indexing
+   1) chmod +x recollindex.
+   2) replace <CONTAINER_ID> with the actual id from "docker ps"
+   3) run "./recollindex".  
+   4) This will create an index but it is a one-shot deal. Setting up periodic updates is not covered here.
+- Open a webpage to http://localhost:8888
+
