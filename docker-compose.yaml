@@ -1,0 +1,13 @@
+
+services:
+  recoll-docker:
+    container_name: recoll-docker
+    image: recoll-docker:latest
+    restart: always
+    ports:
+      - "8888:80"
+    volumes:
+      - /home/rsmith/.recoll:/root/.recoll
+      - /home/rsmith/:/data
+
+
