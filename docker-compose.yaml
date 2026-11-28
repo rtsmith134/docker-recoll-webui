@@ -7,7 +7,7 @@ services:
     ports:
       - "8888:80"
     volumes:
-      - /home/rsmith/.recoll:/root/.recoll
+      - /root/.recoll:/root/.recoll
       - /home/rsmith/:/data
 
 
