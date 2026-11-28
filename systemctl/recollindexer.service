@@ -1,0 +1,26 @@
+# Contributed by Frank Dana, licensed as Recoll itself
+[Unit]
+Description=Recoll real-time document indexing
+After=network.target
+
+[Service]
+Type=oneshot
+# -m: Monitor the file system for new or deleted files and react accordingly.
+# -D: Stay in the foreground to make it easier to manage with systemd.
+# -x: Disable all X11 support.  You don't need this on a server.
+# -w 30: Wait 30 seconds after startup before indexing.
+# -c %h/.recoll/index-archive/: Look for configuration here.  Also put the
+#   index constructed here.
+ExecStart=/usr/bin/docker exec recoll-docker recollindex -D -x -w 30 -c /root/.recoll/
+# ExecStart=/usr/bin/recollindex
+Restart=on-failure
+RestartSec=60
+# CPU usage control examples. If you set this low, you probably also want to configure the
+# recollindex multithreading parameters in recoll.conf. Use thrTCounts to limit the number of
+# threads, or disable multithreading altogether with thrQSizes = -1 -1 -1
+# CPUQuota=40% # the indexer will use no more than 40% of one CPU core.
+# CPUQuota=100% # the indexer will use no more than 100% of one CPU core.
+# CPUQuota=250% # the indexer will use no more than the capacity of two and half CPU cores.
+
+[Install]
+WantedBy=default.target

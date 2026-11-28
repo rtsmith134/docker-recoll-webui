@@ -1,0 +1,14 @@
+[Unit]
+Description=Restart recollindexer.service every 8 hours
+
+[Timer]
+# Run 5 minutes after system bootup
+OnBootSec=5min
+# Run every 8 hours relative to the last time the service was started
+OnUnitActiveSec=8h
+
+# Ensure it targets our specific service
+Unit=recollindexer.service
+
+[Install]
+WantedBy=timers.target
